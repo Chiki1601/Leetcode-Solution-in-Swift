@@ -1,4 +1,5 @@
-   func displayTable(_ orders: [[String]]) -> [[String]] {
+class Solution {
+       func displayTable(_ orders: [[String]]) -> [[String]] {
         var tableHead: [String] = ["Table"]
         var foodNames = Set<String>()
         var mapFoodAndIndex = [String: Int]()
@@ -26,3 +27,4 @@
 
         return ans
     }
+}
