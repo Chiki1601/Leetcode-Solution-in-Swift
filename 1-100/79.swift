@@ -1,23 +1,113 @@
-class Solution {
-  class Solution {
- public:
-  vector<vector<int>> subsets(vector<int>& nums) {
-    vector<vector<int>> ans;
-    dfs(nums, 0, {}, ans);
-    return ans;
-  }
 
- private:
-  void dfs(const vector<int>& nums, int s, vector<int>&& path,
-           vector<vector<int>>& ans) {
-    ans.push_back(path);
-
-    for (int i = s; i < nums.size(); ++i) {
-      path.push_back(nums[i]);
-      dfs(nums, i + 1, move(path), ans);
-      path.pop_back();
+    func exist(_ board: [[Character]], _ word: String) -> Bool {
+        let chs = reverseIfNeeded(Array(word))
+        if isValid(board, chs) == false { return false }
+        var res = false
+        
+        func backtrack(_ path: [[Int]], _ position: [Int], _ target: Int) {
+            if res || path.count == target { res = true; return }
+            
+            let char = chs[path.count]
+            let positions = next(board, position, char)
+            var path = path
+            
+            for position in positions {
+                if path.contains(position) { continue }
+                
+                path.append(position)
+                backtrack(path, position, target)
+                path.remove(at: path.count - 1)
+            }
+        }
+        
+        backtrack([], [-1, -1], chs.count)
+        return res
     }
-  }
-};
 
-}
+    
+    func isValid(_ board: [[Character]], _ chars: [Character]) -> Bool {
+        var res = true
+        
+        loop1: for c in chars {
+            var tmp = false
+            
+            loop2: for i in 0..<board.count {
+                for j in 0..<board[0].count {
+                    if board[i][j] == c { tmp = true; break loop2 }
+                }
+            }
+            
+            if tmp == false { res = false; break loop1 }
+        }
+        
+        return res
+    }
+
+    
+    func reverseIfNeeded(_ chars: [Character]) -> [Character] {
+        var headCount = 0
+        var tailCount = 0
+        
+        for c in chars {
+            if c == chars[0] {
+                headCount += 1
+            }
+            if c == chars[chars.count - 1] {
+                tailCount += 1
+            }
+        }
+        
+        if tailCount < headCount {
+            return chars.reversed()
+        
+        } else {
+            return chars
+        }
+    }
+
+    
+    func next(_ board: [[Character]], _ position: [Int], _ char: Character) -> [[Int]] {
+        var res: [[Int]] = []
+        
+        if position[0] == -1 {
+            for i in 0..<board.count {
+                for j in 0..<board[0].count {
+                    if board[i][j] == char {
+                        res.append([i, j])
+                    }
+                }
+            }
+        } else {
+            var c: Character = " "
+            
+            if position[0] > 0 {
+                let i = position[0] - 1
+                let j = position[1]
+                c = board[i][j]
+                c == char ? res.append([i, j]) : ()
+            }
+            
+            if position[0] < board.count - 1 {
+                let i = position[0] + 1
+                let j = position[1]
+                c = board[i][j]
+                c == char ? res.append([i, j]) : ()
+            }
+            
+            if position[1] > 0 {
+                let i = position[0]
+                let j = position[1] - 1
+                c = board[i][j]
+                c == char ? res.append([i, j]) : ()
+            }
+            
+            if position[1] < board[0].count - 1 {
+                let i = position[0]
+                let j = position[1] + 1
+                c = board[i][j]
+                c == char ? res.append([i, j]) : ()
+            }
+        }
+        
+        return res
+    }
