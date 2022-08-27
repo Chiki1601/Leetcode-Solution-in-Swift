@@ -1,4 +1,5 @@
-
+class Solution {
+  
     func exist(_ board: [[Character]], _ word: String) -> Bool {
         let chs = reverseIfNeeded(Array(word))
         if isValid(board, chs) == false { return false }
@@ -111,3 +112,5 @@
         
         return res
     }
+
+}
