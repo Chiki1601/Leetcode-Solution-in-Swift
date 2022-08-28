@@ -1,4 +1,5 @@
-  func diagonalSort(_ mat: [[Int]]) -> [[Int]] {
+class Solution {
+    func diagonalSort(_ mat: [[Int]]) -> [[Int]] {
         var mat = mat
         let n = mat.count
         let m = mat[0].count
@@ -29,3 +30,5 @@
             mat[i][j] = diagonal.removeLast()
         }
     }
+
+}
