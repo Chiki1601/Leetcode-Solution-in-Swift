@@ -1,14 +1,22 @@
 class Solution {
-    func countInterestingSubarrays(_ nums: [Int], _ modulo: Int, _ k: Int) -> Int64 {
-    var cnt = [0: 1]
-    var res: Int64 = 0
-    var prefix = 0
-    for num in nums {
-        if num % modulo == k { prefix += 1 }
-        let target = (prefix - k + modulo) % modulo
-        res += Int64(cnt[target, default: 0])
-        cnt[prefix % modulo, default: 0] += 1
+    func countInterestingSubarrays(_ nums: [Int], _ modulo: Int, _ k: Int) -> Int {
+        let n = nums.count
+        
+        var answer = 0
+        var count = 0
+        var counts: [Int: Int] = [0: 1]
+
+        for right in 0..<n {
+            if nums[right] % modulo == k {
+                count = (count + 1) % modulo
+            }
+
+            let other = (modulo + count - k) % modulo
+            answer += counts[other, default: 0]
+
+            counts[count, default: 0] += 1
+        }
+
+        return answer
     }
-    return res
-}
 }
