@@ -1,4 +1,5 @@
-func generate(_ numRows: Int) -> [[Int]] {
+class Solution {
+  func generate(_ numRows: Int) -> [[Int]] {
     var result: [[Int]] = []
     for row in 0..<numRows {
         let count = row + 1
@@ -15,4 +16,5 @@ func generate(_ numRows: Int) -> [[Int]] {
         result.append(array)
     }
     return result
+}
 }
